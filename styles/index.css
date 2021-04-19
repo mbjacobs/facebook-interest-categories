@@ -1,0 +1,42 @@
+.navbar {
+    padding-left: 20px;
+}
+
+main {
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#interest-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#interest-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+button {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.light-green-btn {
+    background-color: lightgreen;
+    color: black;
+}
+
+.light-green-btn:hover {
+    background-color: lawngreen;
+}
+
+.square:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
