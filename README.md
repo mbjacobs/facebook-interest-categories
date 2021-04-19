@@ -1,3 +1,3 @@
-# facebook-interest-categories
+# Facebook Interest Categories
 
 Final project for SI 579.
