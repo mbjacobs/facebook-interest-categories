@@ -1188,7 +1188,7 @@ life_relevancy_btn.addEventListener('click', function () {filterByRelevancy('lif
 identity_relevancy_btn.addEventListener('click', function () {filterByRelevancy('identity_relevancy')});
 irrelevancy_btn.addEventListener('click', filterByIrrelevancy);
 randomize_btn.addEventListener('click', randomize);
-sort_btn.addEventListener('click', function () {setTimeout(sort(interest_categories), 2000)});
+sort_btn.addEventListener('click', function () {(sort(interest_categories))});
 
 function populateInterests (interests) {
     const s = Snap("#interest-container");
