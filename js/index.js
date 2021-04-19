@@ -1181,12 +1181,14 @@ const life_relevancy_btn = document.querySelector("#life_relevancy_btn");
 const identity_relevancy_btn = document.querySelector("#identity_relevancy_btn");
 const irrelevancy_btn = document.querySelector("#irrelevancy_btn");
 const randomize_btn = document.querySelector("#randomize_btn");
+const sort_btn = document.querySelector("#sort_btn");
 
 window.addEventListener('load', populateInterests(interest_categories)); 
 life_relevancy_btn.addEventListener('click', function () {filterByRelevancy('life_relevancy')});
 identity_relevancy_btn.addEventListener('click', function () {filterByRelevancy('identity_relevancy')});
 irrelevancy_btn.addEventListener('click', filterByIrrelevancy);
 randomize_btn.addEventListener('click', randomize);
+sort_btn.addEventListener('click', function () {setTimeout(sort(interest_categories), 2000)});
 
 function populateInterests (interests) {
     const s = Snap("#interest-container");
@@ -1199,15 +1201,23 @@ function populateInterests (interests) {
             const randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
             
             //Define SVG elements
-            var square = s.rect(50 + x_offset, 20 + y_offset, 50, 50, 10).attr({id: count, name: interest.topic, class: "square", fill: randomColor});
-            var label = s.text(50 + x_offset, 90 + y_offset, interest.topic).attr({'font-size': 10, 'font-color': randomColor});
+            var square = s.rect(60 + x_offset, 20 + y_offset, 60, 60, 10).attr({id: count, title: interest.topic, class: "square", fill: randomColor});
+            var label = s.text(60 + x_offset, 90 + y_offset, interest.topic).attr({'font-size': 10, 'font-color': randomColor, 'display': "block"});
 
-            //Add animation, drag ability and group the square + label together
-            square.animate({r: 20}, 1000);
+            //Add animation, drag ability, and click/hover interactions 
+            square.animate({r: 25}, 1500);
+            square.click(function(){
+              toggleVisibility(label);
+            })
+            square.hover(function(){
+              //Show name of topic (title)!
+            })
+
+            //Group the interest square and its label together
             group = s.g(square, label); 
             group.drag();
             interestList.append(group);
-            
+
             //Perform math calculations to place next square.
             x_offset += 100;  
             count += 1;
@@ -1215,18 +1225,50 @@ function populateInterests (interests) {
                 y_offset += 100;
                 x_offset = 5;              
             }
-
             // console.log({count}, square.attr("id"))
         } 
     )
 }
 
+function toggleVisibility (element) {
+  if (element.attr("display") === "none") {
+    element.attr({display: "block"})
+  } else {
+    element.attr({display: "none"})
+  }
+}
+
+function sort (interests) {
+  var y_offset = 5;
+  var s = Snap("#interest-container");
+  s.attr({viewBox: "0 0 1200 5000"});
+
+  interests.forEach(function (interest) {
+
+    square = $('rect[title="' + interest.topic + '"]');
+    square.attr({width: 30, height: 30})
+
+    group = square.parent();
+    $(group.children()[1]).remove();
+
+    if (interest.life_relevancy === true && interest.identity_relevancy === false){
+      square.animate({x: 525, y: y_offset}, 3000, mina.linear);
+    }
+    if (interest.identity_relevancy === true){
+      square.animate({x: 200, y: y_offset}, 3000, mina.linear);
+    }
+    if (interest.life_relevancy === false && interest.identity_relevancy === false){
+      square.animate({x: 790, y: y_offset}, 3000, mina.linear);
+    }
+    y_offset += 40;
+  })
+}
+
 function filterByRelevancy (relevancy_type) {
     relevancy_subset  = _.filter(interest_categories, [relevancy_type, true]);
-    // console.log({relevancy_subset})
 
     _.forEach(relevancy_subset, function (relevant_interest) {
-        relevancy_square = $('rect[name="' + relevant_interest.topic + '"]');
+        relevancy_square = $('rect[title="' + relevant_interest.topic + '"]');
 
         if (relevancy_type === "life_relevancy") {
             $(relevancy_square).attr({fill: 'lightgreen'});
@@ -1238,10 +1280,9 @@ function filterByRelevancy (relevancy_type) {
 
 function filterByIrrelevancy () {
     irrelevancy_subset  = _.filter(interest_categories, { 'life_relevancy': false, 'identity_relevancy': false });    
-    // console.log({irrelevancy_subset})
 
     _.forEach(irrelevancy_subset, function (irrelevant_interest) {
-        irrelevancy_square = $('rect[name="' + irrelevant_interest.topic + '"]');
+        irrelevancy_square = $('rect[title="' + irrelevant_interest.topic + '"]');
         $(irrelevancy_square).attr({fill: 'red'});
     })
 }
