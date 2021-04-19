@@ -1201,16 +1201,14 @@ function populateInterests (interests) {
             const randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
             
             //Define SVG elements
-            var square = s.rect(60 + x_offset, 20 + y_offset, 60, 60, 10).attr({id: count, title: interest.topic, class: "square", fill: randomColor});
+            var square = s.rect(60 + x_offset, 20 + y_offset, 60, 60, 10).attr
+            ({id: count, title: interest.topic, class: "square", fill: randomColor});
             var label = s.text(60 + x_offset, 90 + y_offset, interest.topic).attr({'font-size': 10, 'font-color': randomColor, 'display': "block"});
 
             //Add animation, drag ability, and click/hover interactions 
             square.animate({r: 25}, 1500);
             square.click(function(){
               toggleVisibility(label);
-            })
-            square.hover(function(){
-              //Show name of topic (title)!
             })
 
             //Group the interest square and its label together
@@ -1225,7 +1223,6 @@ function populateInterests (interests) {
                 y_offset += 100;
                 x_offset = 5;              
             }
-            // console.log({count}, square.attr("id"))
         } 
     )
 }
